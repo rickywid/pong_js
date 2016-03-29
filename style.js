@@ -1,31 +1,31 @@
-var canvas;
-var ctx;
-var ballX = 400;
-var ballY = 300;
+// declare global variables
 
-var ballSpeedX;
-var ballSpeedY = ballSpeedX - 5;
+var ballX = 400;							// ball starting X axis position
+var ballY = 300;							// ball starting Y axis position
 
-var leftPaddleY = 100;
-var rightPaddleY = 100;
-var paddleHeight = 100
-var paddleThickness = 10;
+var ballSpeedX;								// ball speed X axis as determined by user selection
+var ballSpeedY = ballSpeedX - 5;			// ball speed Y axis
 
-var playerScore = 0;
-var computerScore = 0;
-var winningScore = 5;
-var showWinningScreen = false;
-var fps = 20;
+var leftPaddleY = 100;						// left paddle Y axis starting position
+var rightPaddleY = 100;						// right paddle Y axis starting position
+var paddleHeight = 100						// paddle height
+var paddleThickness = 10;					// paddle thickness
 
+var playerScore = 0;						// player score
+var computerScore = 0;						// computer score
+var winningScore = 5;						// winning score
+var showWinningScreen = false;				// show winner screen when winning score is reached
+var fps = 20;								// frames per second for ball animations and canvas renderings
+
+
+// get DOM elements
 var ballSpeedNormal = document.getElementById('normal');
 var ballSpeedFast = document.getElementById('fast');
 var ballSpeedFaster = document.getElementById('faster');
 var ballSpeedReallyFast = document.getElementById('reallyfast');
+var canvas = document.getElementById('gameCanvas');
+var ctx = canvas.getContext('2d');
 
-
-
-canvas = document.getElementById('gameCanvas');
-ctx = canvas.getContext('2d');
 ctx.fillStyle = 'black';
 ctx.fillRect(0,0, canvas.width, canvas.height);
 
@@ -34,7 +34,7 @@ ctx.fillText('CHOOSE A SPEED =>', canvas.width-200, 80);
 ctx.fillText('CLICK to START GAME', canvas.width-200, 90);
 
 
-
+// set ball speed based on user selection
 function getBallSpeed(){
 	
 	if(ballSpeedNormal.checked){
@@ -62,7 +62,7 @@ function getBallSpeed(){
 
 getBallSpeed();
 
-
+// refresh renderings every 20ms
 setInterval(function(){
 	
 	if(!showWinningScreen){
@@ -73,14 +73,14 @@ setInterval(function(){
 }, fps);
 
 
-
+// user paddle controller based on cursor Y position
 canvas.addEventListener('mousemove', function(e){
 	var mousePos = calculateMousePos(e);
 	leftPaddleY = mousePos.y - (paddleHeight/2);
 
 })
 
-
+// when winner decided, reset scores and wait for click event to start new game
 canvas.addEventListener('click', function(){
 	
 	playerScore = 0;
@@ -89,7 +89,7 @@ canvas.addEventListener('click', function(){
 })
 
 
-
+// draw all canvas objects
 function drawObjects(){
 	
 	// Check to see if game has eneded
@@ -101,17 +101,19 @@ function drawObjects(){
 			centreline('grey');
 			centreCircle(100, 'grey');
 			centreDot(10, 'yellow');
+			
 			showWinner("Player Wins", 320, 450, 'white');
-				scoreDisplay('Player Score: ', playerScore, 100, 20, 'black');
-				scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 20, 'black');
+			scoreDisplay('Player Score: ', playerScore, 100, 20, 'black');
+			scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 20, 'black');
 
 		} else if (computerScore >= winningScore){
 			centreline('grey');
 			centreCircle(100, 'grey');
 			centreDot(10, 'grey');
+			
 			showWinner('Computer Wins', 300, 450, 'white');
-				scoreDisplay('Player Score: ', playerScore, 100, 20, 'black');
-				scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 20, 'black');
+			scoreDisplay('Player Score: ', playerScore, 100, 20, 'black');
+			scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 20, 'black');
 		}
 
 		// Display action to start new game
@@ -126,6 +128,7 @@ function drawObjects(){
 
 	// fill canvas bg
 	ctx.fillStyle = 'black';
+	// fillRect(xPos, yPos, width, height)
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 	// draw left paddle
@@ -156,19 +159,23 @@ function drawObjects(){
 
 //draw paddle
 function drawPaddle(xPos, yPos, paddleWidth, paddleHeight, color){
+
 	ctx.fillStyle = color;
 	ctx.fillRect(xPos, yPos, paddleWidth, paddleHeight);
 }
 
 // draw scores
 function scoreDisplay(text, scoreInput, xPos, yPos, color){
+
 	ctx.fillStyle = color;
 	ctx.font = '10px sans-serif';
 	ctx.fillText(text + scoreInput, xPos, yPos);
+
 }
 
 // show winner
 function showWinner(text, xPos, yPos, color){
+
 		ctx.fillStyle = color;
 		ctx.font = '30px Arial';
 		ctx.fillText(text, xPos, yPos);
@@ -176,13 +183,17 @@ function showWinner(text, xPos, yPos, color){
 
 // draw ball
 function drawBall(xPos, yPos, radius, color){
+
 	ctx.fillStyle = color;
 	ctx.beginPath();
 	ctx.arc(xPos, yPos, radius, 0, Math.PI *2);
 	ctx.fill();
 }
 
+
+// ballAnimate will animate every 20ms as set in setInterval line 70
 function ballAnimate(){
+
 	ballX = ballX + ballSpeedX;	
 	ballY = ballY + ballSpeedY;	
 	var leftPaddleYBottom = leftPaddleY + paddleHeight;
@@ -195,14 +206,16 @@ function ballAnimate(){
 		//check if ball hits left paddle
 		if(ballY < leftPaddleYBottom && ballY > leftPaddleY){
 
+			// determine ball deflection angle based on paddle contact area
+			// further away the ball makes contact from midpoint of paddle, greater the angle deflection
 			var delta = ballY - (leftPaddleY + (paddleHeight/2));
 			ballSpeedX = -ballSpeedX;
 			ballSpeedY = delta * 0.1;
 			
 
 		} else {
+			
 			computerScore++;
-
 			ballReset();
 		}
 	}
@@ -213,6 +226,8 @@ function ballAnimate(){
 		//check if ball hits right paddle
 		if(ballY < rightPaddleYBottom && ballY > rightPaddleY && ballX > canvas.width-paddleThickness){
 
+			// determine ball deflection angle based on paddle contact area
+			// further away the ball makes contact from midpoint of paddle, greater the angle deflection
 			var delta = ballY - (rightPaddleY + (paddleHeight/2));
 			ballSpeedX = -ballSpeedX;
 			ballSpeedY = delta * 0.1;
@@ -238,10 +253,7 @@ function ballAnimate(){
 		ballSpeedY = -ballSpeedY;	
 
 	}
-
 }
-
-
 
 
 function ballReset(){
@@ -250,17 +262,11 @@ function ballReset(){
 		
 		showWinningScreen = true;
 
-						scoreDisplay('Player Score: ', playerScore, 100, 30, 'white');
-				scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 30, 'white');
-				console.log('win')
+			scoreDisplay('Player Score: ', playerScore, 100, 30, 'white');
+			scoreDisplay('Computer Score: ', computerScore, canvas.width - 200, 30, 'white');
 	}
 
 	// draw scores
-
-	console.log(computerScore)
-
-
-
 	ballX = 400;
 	ballY = 300;
 	ballSpeedX = -ballSpeedX;
@@ -272,24 +278,21 @@ function ballReset(){
 
 function computerPaddle(){
 
+	// rightPaddleY(yPos) + (paddleHeight(100)/2)
 	var paddleMid = rightPaddleY + (paddleHeight/2);
 
-		if((rightPaddleY - paddleHeight) > canvas.height){
-			
-			rightPaddleY = 550;
-
-		}
-
-	//if ball is below midpoint of paddle plus 35px them move paddle down by 5px
+	// Check if the AI paddle Y position (mid paddle) is less than the ball position
+	// Move paddle 4px down if ball Y position is 35px below the middle of the paddle position
 	if(paddleMid < ballY+35) {
 
+		rightPaddleY += 4;
 
-		rightPaddleY += 3;
-	//if ball is above midpoint of paddle plus 35px them move paddle up by 5px
+	// Check if the AI paddle Y position (mid-paddle) is greater than the ball position
+	// Move paddle 4px up if ball Y position is 35px above the middle of the paddle position
 	} else if(paddleMid > ballY-35){
-		rightPaddleY -= 3;
+	
+		rightPaddleY -= 4;
 	}
-
 }
 
 
@@ -319,13 +322,26 @@ function centreDot(radius, color){
 }
 
 function calculateMousePos(e){
-	
-	// make cursor position to be within the canvas area regardless of viewport size
+
+	// Get the canvas location regardless of viewport size to find mouseX pos and mouseY pos
+
+	// The Element.getBoundingClientRect() method returns the size 
+	// of an element and its position relative to the viewport.
+	// rect = { x: 8, y: 8, width: 800, height: 600, top: 8, right: 808, bottom: 608, left: 8 }
 
 	var rect = canvas.getBoundingClientRect();
+
+	// .documentElement returns the Document Element of the document (the <html> element)
 	var htmlEl = document.documentElement;
 
+	// The clientX property returns the horizontal coordinate (according to the client area) 
+	// of the mouse pointer when a mouse event was triggered.
+	// scrollLeft sets or returns the number of pixels an element's content scrolled horizontally
 	var mouseX = e.clientX - rect.left - htmlEl.scrollLeft;
+
+	// The clientY property returns the vertical coordinate (according to the client area) 
+	// of the mouse pointer when a mouse event was triggered.		
+	// scrollTop sets or returns the number of pixels an element's content scrolled vertically	
 	var mouseY = e.clientY - rect.top - htmlEl.scrollTop;
 
 	return {
