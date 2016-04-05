@@ -5,25 +5,32 @@
 	<meta name="viewport" content="width=device-width">
 	<title>Pong</title>
 </head>
-<style>
-	canvas {float: left; margin-right: 15px;}
-	li {list-style: none;}
-	h3 {text-decoration: underline;}
-</style>
+<link rel="stylesheet" href="style.css">
 <body>
+
+
 	<canvas id="gameCanvas" width="800" height="600"></canvas>
-	<div>
-		<h3>Select Speed</h3>
-		<ul>
-			<li><input name="speed" id="normal" type="radio" value="10" onChange="getBallSpeed()" checked="checked"> Normal</li>
-			<li><input name="speed" id="fast" type="radio" value="15" onChange="getBallSpeed()"> Fast</li>
-			<li><input name="speed" id="faster" type="radio" value="20" onChange="getBallSpeed()"> Faster</li>
-			<li><input name="speed" id="reallyfast" type="radio" value="50" onChange="getBallSpeed()">DO NOT EVEN ATTEMPT</li>
-		</ul>
-		<h3>Instructions</h3>
-		<p>Use mouse to move paddle</p>
-		<h3>Game Details</h3>
-		<p>First to 5 wins</p>
+	<div class="instructions-container">
+		<div class="speed-select">
+			<h4>CHOOSE SPEED</h4>
+			<ul>
+				<li><input name="speed" id="normal" type="radio" value="10" onChange="getBallSpeed()"><label for="normal">Turtle</label></li>
+				<li><input name="speed" id="fast" type="radio" value="15" onChange="getBallSpeed()"><label for="fast">Elephant</label></li>
+				<li><input name="speed" id="faster" type="radio" value="20" onChange="getBallSpeed()"><label for="faster">Kangaroo</label></li>
+				<li><input name="speed" id="reallyfast" type="radio" value="50" onChange="getBallSpeed()"><label for="reallyfast">Cheetah</label></li>
+			</ul>			
+		</div>
+
+		<div class="instructions">
+			<h4>INSTRUCTIONS</h4>
+			<p>Use mouse to move paddle</p>	
+		</div>
+
+		<div class="how-to-win">
+			<h4>HOW TO WIN</h4>
+			<p>First to 5 wins</p>
+		</div>
+
 	</div>
 	<script src="style.js"></script>
 </body>

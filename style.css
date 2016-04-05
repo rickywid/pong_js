@@ -1,0 +1,44 @@
+	canvas {float: left; margin-right: 15px;}
+	ul {padding-left: 0;}
+	li {list-style: none;}
+	h4 {text-decoration: underline;}
+
+	input[type="radio"] {
+		display: none;
+	}	
+
+	input[type="radio"] + label:before {
+		background-color: white;
+		border: 1px solid rgb(123, 123, 123);
+		border-radius: 100%;
+		content: "";
+		display: inline-block;
+		font-size: 29px;
+		height: 16px;
+		width: 16px;
+		line-height: 11px;
+		margin: 5px 6px 0 0;
+		text-align: center;
+		vertical-align: bottom;
+	}		
+
+	input[type="radio"]:checked + label:before {
+		content: "\2713";
+		color: rgb(219, 32, 32);
+	}
+
+	.instructions-container {
+		background-color: white;
+		display: inline-block;
+		width: 35%;
+	}
+
+	.speed-select {
+		border-top: 1px dashed black;
+	}
+
+	.speed-select,
+	.instructions,
+	.how-to-win {
+		border-bottom: 1px dashed black;
+	}

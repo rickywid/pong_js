@@ -210,7 +210,7 @@ function ballAnimate(){
 			// further away the ball makes contact from midpoint of paddle, greater the angle deflection
 			var delta = ballY - (leftPaddleY + (paddleHeight/2));
 			ballSpeedX = -ballSpeedX;
-			ballSpeedY = delta * 0.1;
+			ballSpeedY = delta * 0.17;
 			
 
 		} else {
@@ -230,7 +230,7 @@ function ballAnimate(){
 			// further away the ball makes contact from midpoint of paddle, greater the angle deflection
 			var delta = ballY - (rightPaddleY + (paddleHeight/2));
 			ballSpeedX = -ballSpeedX;
-			ballSpeedY = delta * 0.1;
+			ballSpeedY = delta * 0.17;
 
 		} else {
 
